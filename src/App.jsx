@@ -8,15 +8,12 @@ import { loadState, saveState } from "./lib/storage.js";
 import TermPage from "./components/pages/TermPage.jsx";
 import ExercisePage from "./components/pages/ExercisePage.jsx";
 import Header from "./components/sections/Header.jsx";
-import ParametersSection from "./components/sections/ParametersSection.jsx";
 import ProgramComparison from "./components/sections/ProgramComparison.jsx";
-import Recommendation from "./components/sections/Recommendation.jsx";
 import TrainingWeek from "./components/sections/TrainingWeek.jsx";
 import MobilitySection from "./components/sections/MobilitySection.jsx";
 import InjuryNotes from "./components/sections/InjuryNotes.jsx";
 import ProgressionModel from "./components/sections/ProgressionModel.jsx";
 import MealPlanner from "./components/sections/MealPlanner.jsx";
-import GlossaryIndex from "./components/sections/GlossaryIndex.jsx";
 
 export default function App() {
   // Hydrate persisted state once, before the first paint.
@@ -59,7 +56,7 @@ export default function App() {
   const resetWeek = useCallback(() => setActivityLog({}), []);
 
   const nutrition = useMemo(() => computeNutrition(params), [params]);
-  const { split, days: schedule, overloaded } = useMemo(() => buildWeekSchedule(params), [params]);
+  const { days: schedule } = useMemo(() => buildWeekSchedule(params), [params]);
 
   return (
     <NavContext.Provider value={nav}>
@@ -69,11 +66,9 @@ export default function App() {
 
         {route.view === "home" && (
           <>
-            <Header params={params} />
+            <Header />
             <main className="max-w-3xl mx-auto px-6 py-8 pb-16">
-              <ParametersSection params={params} updateParam={updateParam} overloaded={overloaded} />
-              <ProgramComparison workoutDays={params.workoutDays} openProgram={openProgram} setOpenProgram={setOpenProgram} />
-              <Recommendation params={params} split={split} nutrition={nutrition} />
+              <ProgramComparison workoutDays={params.workoutDays} openProgram={openProgram} setOpenProgram={setOpenProgram} updateParam={updateParam} />
               <TrainingWeek
                 params={params}
                 nutrition={nutrition}
@@ -88,7 +83,6 @@ export default function App() {
               <InjuryNotes params={params} />
               <ProgressionModel />
               <MealPlanner params={params} nutrition={nutrition} />
-              <GlossaryIndex />
             </main>
           </>
         )}
