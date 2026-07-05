@@ -23,7 +23,7 @@ export default function Term({ id, children, dark }) {
       </button>
       <span
         role="tooltip"
-        className="pointer-events-none absolute z-40 left-1/2 -translate-x-1/2 bottom-full mb-2 w-64 rounded-xl bg-stone-900 text-stone-100 text-xs font-normal normal-case tracking-normal leading-relaxed text-left px-3.5 py-2.5 shadow-xl ring-1 ring-black/5 opacity-0 translate-y-1 transition-all duration-150 group-hover:opacity-100 group-hover:translate-y-0 group-focus-within:opacity-100 group-focus-within:translate-y-0"
+        className="pointer-events-none absolute z-40 left-1/2 -translate-x-1/2 bottom-full mb-2 w-64 max-w-[calc(100vw-2rem)] rounded-xl bg-stone-900 text-stone-100 text-xs font-normal normal-case tracking-normal leading-relaxed text-left px-3.5 py-2.5 shadow-xl ring-1 ring-black/5 opacity-0 translate-y-1 transition-all duration-150 group-hover:opacity-100 group-hover:translate-y-0 group-focus-within:opacity-100 group-focus-within:translate-y-0"
       >
         <span className="block font-semibold text-emerald-300 mb-0.5">{g.term}</span>
         <span className="text-stone-200">{g.short}</span>

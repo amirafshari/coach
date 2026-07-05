@@ -101,6 +101,7 @@ export default function TrainingWeek({ params, nutrition, schedule, activityLog,
               </div>
               {isOpen && day.kind === "lift" && (
                 <div className="px-4 py-4">
+                  <div className="overflow-x-auto">
                   <table className="w-full border-collapse text-sm">
                     <thead>
                       <tr className="border-b border-stone-200 dark:border-stone-700">
@@ -123,6 +124,7 @@ export default function TrainingWeek({ params, nutrition, schedule, activityLog,
                       ))}
                     </tbody>
                   </table>
+                  </div>
                   <p className="text-xs text-stone-400 dark:text-stone-500 mt-3 flex items-center gap-1.5">
                     <PlayCircle size={12} /> Tap any exercise name to see how it's done.
                   </p>

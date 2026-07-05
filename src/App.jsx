@@ -1,12 +1,12 @@
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo, useCallback, lazy, Suspense } from "react";
 import { NavContext } from "./context/NavContext.jsx";
 import { DEFAULT_PARAMS } from "./data/defaults.js";
 import { computeNutrition } from "./lib/nutrition.js";
 import { buildWeekSchedule, cycleStatus } from "./lib/schedule.js";
 import { loadState, saveState } from "./lib/storage.js";
 
-import TermPage from "./components/pages/TermPage.jsx";
-import ExercisePage from "./components/pages/ExercisePage.jsx";
+const TermPage = lazy(() => import("./components/pages/TermPage.jsx"));
+const ExercisePage = lazy(() => import("./components/pages/ExercisePage.jsx"));
 import Header from "./components/sections/Header.jsx";
 import ProgramComparison from "./components/sections/ProgramComparison.jsx";
 import TrainingWeek from "./components/sections/TrainingWeek.jsx";
@@ -61,8 +61,10 @@ export default function App() {
   return (
     <NavContext.Provider value={nav}>
       <div className="min-h-screen bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-stone-50">
-        {route.view === "term" && <TermPage id={route.id} />}
-        {route.view === "exercise" && <ExercisePage name={route.id} />}
+        <Suspense fallback={null}>
+          {route.view === "term" && <TermPage id={route.id} />}
+          {route.view === "exercise" && <ExercisePage name={route.id} />}
+        </Suspense>
 
         {route.view === "home" && (
           <>

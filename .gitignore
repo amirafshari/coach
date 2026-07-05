@@ -33,3 +33,6 @@ pnpm-debug.log*
 !.env.example
 .vercel
 .env*
+
+# Playwright MCP output
+.playwright-mcp/
