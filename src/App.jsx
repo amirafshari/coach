@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback, lazy, Suspense } from "react";
+import { useState, useEffect, useLayoutEffect, useRef, useMemo, useCallback, lazy, Suspense } from "react";
 import { NavContext } from "./context/NavContext.jsx";
 import { DEFAULT_PARAMS } from "./data/defaults.js";
 import { computeNutrition } from "./lib/nutrition.js";
@@ -26,6 +26,7 @@ export default function App() {
   const [openProgram, setOpenProgram] = useState(null);
   const [openDay, setOpenDay] = useState(0);
   const [route, setRoute] = useState({ view: "home", id: null }); // 'home' | 'term' | 'exercise'
+  const homeScrollY = useRef(0);
 
   // Persist on any change.
   useEffect(() => {
@@ -34,12 +35,20 @@ export default function App() {
 
   const nav = useMemo(() => {
     const scrollTop = () => { try { window.scrollTo({ top: 0, behavior: "auto" }); } catch { /* noop */ } };
+    const leaveHome = () => { homeScrollY.current = window.scrollY; };
     return {
-      openTerm: (id) => { setRoute({ view: "term", id }); scrollTop(); },
-      openExercise: (id) => { setRoute({ view: "exercise", id }); scrollTop(); },
-      goHome: () => { setRoute({ view: "home", id: null }); scrollTop(); },
+      openTerm: (id) => { leaveHome(); setRoute({ view: "term", id }); scrollTop(); },
+      openExercise: (id) => { leaveHome(); setRoute({ view: "exercise", id }); scrollTop(); },
+      goHome: () => { setRoute({ view: "home", id: null }); },
     };
   }, []);
+
+  // Restore scroll position when returning to the home page.
+  useLayoutEffect(() => {
+    if (route.view === "home") {
+      try { window.scrollTo({ top: homeScrollY.current, behavior: "auto" }); } catch { /* noop */ }
+    }
+  }, [route.view]);
 
   const updateParam = useCallback((key, value) => {
     setParams((p) => ({ ...p, [key]: value }));
